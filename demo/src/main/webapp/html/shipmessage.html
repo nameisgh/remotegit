@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script type="text/javascript" src="/assets/js/jquery-2.0.3.min.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function(){
+        alert("hello")
+        data=null;
+        $.ajax("getshipmessage.action",{
+            method:"post",
+            type:"json",
+            data:data,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success:function(datas){
+                alert("。。。")
+                alert(datas)
+            },
+            error:function () {
+                alert("数据获取失败。。。")
+            }
+        });
+    });
+</script>
+</body>
+</html>

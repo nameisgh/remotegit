@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script type="text/javascript" src="/assets/js/jquery-2.0.3.min.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function(){
+        $.ajax("getshipmessage.action",{
+            method:"post",
+            type:"json",
+            data:{},
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success:function(datas){
+                alert(datas)
+                initshowshipmessagetable(datas)
+            },
+            error:function () {
+                alert("数据获取失败,请刷新重新加载")
+            }
+        });
+    });
+
+    function initshowshipmessagetable(shipmessage){
+        //每次清空表格
+        $("#showshipmessage  tr:not(:first)").empty("");
+        var bodyObj=document.getElementById("showshipmessage");
+        if(bodyObj==null)
+        {
+            alert("Body of Table not Exist!");
+            return;
+        }
+        var rowCount = bodyObj.rows.length;
+        var cellCount = bodyObj.rows[0].cells.length;
+        for(var i=0;i<shipmessage.length;i++){
+            var newRow = bodyObj.insertRow(rowCount++);
+
+            var number=(i+1);
+            var index=shipmessage[i].index;
+            var type=shipmessage[i].type;
+            var port=shipmessage[i].port;
+            var level=shipmessage[i].level;
+            var district=shipmessage[i].ditrict;
+            var length=shipmessage[i].length;
+            var width=shipmessage[i].width;
+            var height=shipmessage[i].height;
+            var grosston=shipmessage[i].grosston;
+            var deadweight=shipmessage[i].deadweight;
+            var enginetype=shipmessage[i].enginetype;
+            var enginepower=shipmessage[i].enginepower;
+            var builddate=shipmessage[i].builddate;
+            var factory=shipmessage[i].factory;
+            var dealdate=shipmessage[i].dealdate;
+
+            newRow.insertCell(0).innerHTML="<input name='ship_checkBox'  type='checkbox' id='checkbox"+i+"'/>"
+            newRow.insertCell(1).innerHTML=number;
+            newRow.insertCell(2).innerHTML=index;
+            newRow.insertCell(3).innerHTML=type;
+            newRow.insertCell(4).innerHTML=port;
+            newRow.insertCell(5).innerHTML=level;
+            newRow.insertCell(6).innerHTML=district;
+            newRow.insertCell(7).innerHTML=length;
+            newRow.insertCell(8).innerHTML=width;
+            newRow.insertCell(9).innerHTML=height;
+            newRow.insertCell(10).innerHTML=grosston;
+            newRow.insertCell(11).innerHTML=deadweight;
+            newRow.insertCell(12).innerHTML=enginetype;
+            newRow.insertCell(13).innerHTML=enginepower;
+            newRow.insertCell(14).innerHTML=builddate;
+            newRow.insertCell(15).innerHTML=factory;
+            newRow.insertCell(16).innerHTML=dealdate;
+            newRow.insertCell(17).innerHTML="";
+            newRow.insertCell(18).innerHTML="";
+            newRow.insertCell(19).innerHTML="";
+            newRow.insertCell(20).innerHTML="";
+        }
+    }
+</script>
+<div class="page-content"  >
+    <table id="showshipmessage" border="1" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="center" style="width:60px;">批量估值勾选</th>
+            <th class="center" style="width:50px;">序号</th>
+            <th class="center" style="width:70px;">船名</th>
+            <th class="center" style="width:70px;">船型</th>
+            <th class="center" style="width:60px;">船籍港</th>
+            <th class="center" style="width:50px;">船级</th>
+            <th class="center" style="width:50px;">航区</th>
+            <th class="center" style="width:60px;">总长</th>
+            <th class="center" style="width:60px;">型宽</th>
+            <th class="center" style="width:60px;">型深</th>
+            <th class="center" style="width:60px;">总吨</th>
+            <th class="center" style="width:60px;">载重吨</th>
+            <th class="center" style="width:70px;">主机型号</th>
+            <th class="center" style="width:70px;">主机功率(KW)</th>
+            <th class="center" style="width:90px;">建造日期</th>
+            <th class="center">建造船厂</th>
+            <th class="center" style="width:100px;">真实交易日期</th>
+            <th class="center" style="width:100px;">估值日期</th>
+            <th class="center" style="width:120px;">估值结果(万元)</th>
+            <th class="center" style="width:70px;">估值结果可信度</th>
+            <th class="center" style="width:82px;">真实交易价格 (万元)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="ship_accorditionShow"></tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <button id="mutishipbtn" style="display:block;margin: 20px auto 0;width:220px;" >船舶批量估值</button>
+</div>
+<script>
+    $("#mutishipbtn").click(function(){
+        $("input[name='ship_checkBox']:checked").each(function() { // 遍历选中的checkbox
+            n = $(this).parents("tr").index();  // 获取checkbox所在行的顺序
+            var row=n+1;
+            var rowCells=$("#showshipmessage").find("tr:eq("+row+")")[0];
+            var index= rowCells.cells[2].innerHTML;
+            var type=rowCells.cells[3].innerHTML;
+            var port=rowCells.cells[4].innerHTML;
+            var level=rowCells.cells[5].innerHTML;
+            var district=rowCells.cells[6].innerHTML;
+            var length=rowCells.cells[7].innerHTML;
+            var width=rowCells.cells[8].innerHTML;
+            var height=rowCells.cells[9].innerHTML;
+            var grosston=rowCells.cells[10].innerHTML;
+            var deadweight=rowCells.cells[11].innerHTML;
+            var enginetype=rowCells.cells[12].innerHTML;
+            var enginepower=rowCells.cells[13].innerHTML;
+            var builddate=rowCells.cells[14].innerHTML;
+            var factory=rowCells.cells[15].innerHTML;
+            var dealdate=rowCells.cells[16].innerHTML;
+           // var data={index:index,type:type,port:port,level:level,district:district,length:length,width:width,height:height,grosston:grosston,deadweight:deadweight,enginetype:enginetype,enginepower:enginepower,builddate:builddate,factory:factory,dealdate:dealdate};
+           // alert(data.index+":"+data.type+":"+data.port+":"+data.level+":"+data.district+":"+data.length+":"+data.width+":"+data.height+":"+data.grosston+":"+data.deadweight+":"+data.enginetype+":"+data.enginepower+":"+data.builddate+":"+data.factory+":"+data.dealdate)
+            $.ajax({
+                method:"post",
+                type:"json",
+                url: 'http://119.29.144.179:9083/ShipValueEstimation/ship20',
+                async: false,
+                data: JSON.stringify({ token: 'testuser',data:[{index:index,type:type,port:port,level:level,district:district,length:length,width:width,height:height,grosston:grosston,deadweight:deadweight,enginetype:enginetype,enginepower:enginepower,builddate:builddate,factory:factory,dealdate:dealdate}] }) ,
+                //  data: JSON.stringify({token:"testuser",data:[{index:"TEST331",type:"油船",port:"深圳",level:"ZC",district:"内河",length:46.5,width:8.6,height:3.8,grosston:385.0,deadweight:503.0,enginetype:"8140ZC450-1",enginepower:660.0,builddate:"8/20/2015",factory:"台州市路桥金清海祥船舶修造有限公司",dealdate:"8/20/2016"}]}) ,
+                contentType: "application/json; charset=utf-8",
+                success:function(datas){
+                    var data=datas.data[0].predict;
+                   alert(data);
+                },
+                error:function () {
+                    alert("数据获取失败失败。。")
+                }
+            });
+
+        });
+    });
+</script>
+</body>
+</html>
